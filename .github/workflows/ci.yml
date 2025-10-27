@@ -19,10 +19,17 @@ jobs:
           UUID=$(uuidgen)
           echo "IMAGE_NAME=${UUID}" >> $GITHUB_OUTPUT
           echo "IMAGE_NAME=${UUID}" >> $GITHUB_ENV
-      - name: Build docker image
-        run: docker build -t ttl.sh/${IMAGE_NAME}:2h .
-      - name: Push docker image
-        run: docker push ttl.sh/${IMAGE_NAME}:2h
+      - name: Setup Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build image
+        uses: docker/build-push-action@v5
+        with:
+          context: .
+          push: true
+          tags: ttl.sh/${{ steps.generate-uuid.outputs.IMAGE_NAME }}:2h
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
 
   lint:
     runs-on: ubuntu-latest
