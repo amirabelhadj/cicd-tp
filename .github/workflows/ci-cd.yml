@@ -2,11 +2,10 @@ name: CI Pipline Amira
 
 on:
   pull_request:
-    branches:
-      - master
+  
   push:
-    branches:
-      - master
+    
+   
 
 jobs:
   ci:
@@ -32,4 +31,4 @@ jobs:
         run: npm run lint
 
         
-        
+
